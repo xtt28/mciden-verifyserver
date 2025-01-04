@@ -23,3 +23,7 @@ type VerifyIntent struct {
 	CreatedAt *time.Time
 	ExpiresAt *time.Time
 }
+
+func (i VerifyIntent) IsExpired() bool {
+	return i.ExpiresAt.UTC().Before(time.Now().UTC())
+}
