@@ -17,6 +17,7 @@ type Registration struct {
 }
 
 type VerifyIntent struct {
+	ID string
 	StudentID int64
 	PlayerUUID string
 	CreatedAt *time.Time

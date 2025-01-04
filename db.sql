@@ -17,10 +17,12 @@ CREATE TABLE IF NOT EXISTS `registrations` (
 );
 
 CREATE TABLE IF NOT EXISTS `verify_intents` (
+    `id` VARCHAR(36) NOT NULL DEFAULT UUID(),
     `student_id` INT NOT NULL,
     `player_uuid` VARCHAR(36) NOT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `expires_at` TIMESTAMP NOT NULL DEFAULT ADDTIME(CURRENT_TIMESTAMP, "1:00:00"),
 
+    PRIMARY KEY(`id`),
     FOREIGN KEY(`student_id`) REFERENCES `students`(`id`) ON DELETE CASCADE
 );
