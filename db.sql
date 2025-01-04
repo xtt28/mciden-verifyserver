@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `registrations` (
     `player_uuid` VARCHAR(36) NOT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
+    UNIQUE(`student_id`),
     FOREIGN KEY(`student_id`) REFERENCES `students`(`id`) ON DELETE CASCADE
 );
 
