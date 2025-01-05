@@ -1,14 +1,17 @@
-<div
-    class="w-full min-h-screen flex items-center justify-center p-3 bg-gradient-to-b from-green-950 to-black text-green-50">
-    <main class="w-[80ch] flex flex-col gap-3 p-3 outline-green-300 outline rounded outline-1">
-        <h1 class="text-3xl font-bold text-green-300">
-            Hey there 👋 You're all set.<br>
-        </h1>
-        <section class="text-green-50">
-            <h2 class="text-xl">Student Info</h2>
-            <p>{{ .FirstName }} {{ .LastName }}, {{ .Academy }}, {{ .Email }}</p>
-        </section>
+<!doctype html>
+<title>You're all set! Welcome to the server.</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css">
 
-        <p>Your account has been activated, and you can now access the Minecraft server. Have fun!</p>
-    </main>
-</div>
+<main>
+  <hgroup>
+    <h1>Hey there 👋 You're all set.</h1>
+    <p>We successfully activated your account.</p>
+  </hgroup>
+
+  <section>
+    <h2>Student Info</h2>
+    <p>{{ .FirstName }} {{ .LastName }}, {{ .Academy }}, {{ .Email }}</p>
+  </section>
+
+  <p>Your account has been activated, and you can now access the Minecraft server. Have fun!
+</main>

@@ -15,15 +15,15 @@ func Activate(sqldb *sql.DB) echo.HandlerFunc {
 
 		intent, err := db.GetVerifyIntentByID(sqldb, intentID)
 		if intent == (db.VerifyIntent{}) {
-			return c.String(http.StatusNotFound, "Invalid verification intent ID.")
+			return c.Render(http.StatusNotFound, "error.html", "Invalid verification intent ID.")
 		}
 		if err != nil {
 			c.Logger().Error(err)
-			return c.String(http.StatusInternalServerError, "An error occurred while finding your profile.")
+			return c.Render(http.StatusInternalServerError, "error.html", "An error occurred while finding your profile.")
 		}
 
 		if intent.IsExpired() {
-			return c.String(http.StatusGone, "This verification link has expired.")
+			return c.Render(http.StatusGone, "error.html", "This verification link has expired.")
 		}
 
 		err = db.VerifyAccount(sqldb, intent)
@@ -31,15 +31,18 @@ func Activate(sqldb *sql.DB) echo.HandlerFunc {
 			c.Logger().Error(err)
 			if me, ok := err.(*mysql.MySQLError); ok {
 				if me.Number == db.ErrDuplicate {
-					return c.String(http.StatusConflict, "You already have an account registered with this email address.")
-				} else {
-					return c.String(http.StatusInternalServerError, "An error occurred while making your profile.")
+					return c.Render(http.StatusConflict, "error.html", "You already have an account registered with this email address.")
 				}
-			} else {
-				return c.String(http.StatusInternalServerError, "An error occurred while making your profile.")
 			}
+
+			return c.Render(http.StatusInternalServerError, "error.html", "An error occurred while making your profile.")
 		}
 
-		return c.String(http.StatusOK, "Done! Log into Minecraft to access the server.")
+		student, err := db.GetStudentByID(sqldb, intent.StudentID)
+		if err != nil {
+			return c.Render(http.StatusInternalServerError, "error.html", "Couldn't look up student information. Your account still should have been activated.")
+		}
+		c.Logger().Info("Verified Minecraft account (UUID: %s) with intent %s belonging to %s %s", intent.PlayerUUID, intent.ID, student.FirstName, student.LastName)
+		return c.Render(http.StatusOK, "confirm.html", student)
 	}
 }
