@@ -3,27 +3,23 @@ package main
 import (
 	"log"
 
-	"github.com/go-sql-driver/mysql"
+	"github.com/xtt28/mciden-verifyserver/config"
 	"github.com/xtt28/mciden-verifyserver/db"
 	"github.com/xtt28/mciden-verifyserver/server"
 )
 
 func main() {
-	dbconf := mysql.Config{
-		User: "root",
-		Passwd: "",
-		Net: "tcp",
-		Addr: "127.0.0.1:3306",
-		DBName: "identityservice",
-		AllowNativePasswords: true,
-		ParseTime: true,
-	}
-	sqldb, err := db.Connect(dbconf)
+	conf, err := config.ReadConfigFromFile("config.json")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	err = server.Start(sqldb, ":8080")
+	sqldb, err := db.Connect(conf.DBConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = server.Start(sqldb, conf.ServerURL)
 	if err != nil {
 		log.Fatal(err)
 	}

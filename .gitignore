@@ -22,4 +22,7 @@ go.work
 go.work.sum
 
 # env file
-.env
+.envk
+
+# Private instance-specific data
+config.json
