@@ -27,3 +27,7 @@ type VerifyIntent struct {
 func (i VerifyIntent) IsExpired() bool {
 	return i.ExpiresAt.UTC().Before(time.Now().UTC())
 }
+
+func (i VerifyIntent) IsEmpty() bool {
+	return i == VerifyIntent{}
+}
