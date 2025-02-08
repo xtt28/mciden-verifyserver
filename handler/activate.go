@@ -3,6 +3,7 @@ package handler
 import (
 	"database/sql"
 	"net/http"
+	"strings"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/labstack/echo/v4"
@@ -23,6 +24,10 @@ func Activate(sqldb *sql.DB) echo.HandlerFunc {
 	}
 
 	return func(c echo.Context) error {
+		if (strings.Contains(c.Request().UserAgent(), "MicrosoftPreview")) {
+			return renderError(c, http.StatusForbidden, "Please open this link in your browser to continue.")
+		}
+		
 		intentID := c.Param("id")
 
 		intent, err := db.GetVerifyIntentByID(sqldb, intentID)
